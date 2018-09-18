@@ -1,18 +1,14 @@
 package com.qa.TheDemoSite.Demo;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
-public class TestLogIn 
+public class TestCreateUser 
 {
 	private String path = "C:/chromedriver_win32/chromedriver.exe";
 	private String driverKey = "webdriver.chrome.driver";
@@ -31,13 +27,15 @@ public class TestLogIn
 		pass = "lolol";
 	}
 	@Test
-	public void logIn()
+	public void createUser()
 	{
-		//============== Log In ==========
-		driver.get(DemoLogInPage.url);
-		DemoLogInPage demoLogInPage = PageFactory.initElements(driver, DemoLogInPage.class);
-		demoLogInPage.logInUser(name, pass);
-		assertEquals("LogIn Successfull",DemoLogInPage.success, demoLogInPage.getLogInStatus().getText());
+		driver.get(DemoHomePage.url);
+		//=========================== Create Account ==============
+		DemoHomePage demoHomePage = PageFactory.initElements(driver, DemoHomePage.class);
+		demoHomePage.getAddButton().click();
+		DemoAddUserPage demoAddUserPage = PageFactory.initElements(driver, DemoAddUserPage.class);
+		demoAddUserPage.registerUser(name, pass);
+		assertEquals("", demoAddUserPage.getUserName().getAttribute("value"));
 	}
 	@After
 	public void tearDown()
