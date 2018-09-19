@@ -2,8 +2,10 @@ package com.qa.ShoppingWebsite.Shopping;
 
 import java.util.List;
 
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
+import com.relevantcodes.extentreports.*;
 
 public class DemoSearchPage 
 {
@@ -13,14 +15,17 @@ public class DemoSearchPage
 	@FindBy(xpath = "//*[@id=\"center_column\"]")
 	private WebElement grid;
 	
-	public Boolean foundResults(String name)
+	public Boolean foundResults(String name, ExtentTest test)
 	{
 		List<WebElement> listOfProducts = grid.findElements(By.className("product-name"));
 		for (WebElement e : listOfProducts) 
 		{
-			System.out.println("Found: " + e.getText());
-			if(e.getText().toLowerCase().equals(name.toLowerCase()))
-				return true;
+			if(!e.getText().equals(""))
+			{
+				test.log(LogStatus.INFO, "Found: " + e.getText());
+				if(e.getText().toLowerCase().equals(name.toLowerCase()))
+					return true;
+			}
 		}
 		return false;	
 	}

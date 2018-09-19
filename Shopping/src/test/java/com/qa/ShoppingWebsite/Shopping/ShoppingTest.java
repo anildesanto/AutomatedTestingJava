@@ -4,13 +4,14 @@ import static org.junit.Assert.*;
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.*;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
+
+import com.relevantcodes.extentreports.*;
 
 public class ShoppingTest 
 {
@@ -18,42 +19,88 @@ public class ShoppingTest
 	private String driverKey = "webdriver.chrome.driver";
 	private ChromeDriver driver;
 	private Actions action;
+	private static ExtentReports report;
+	private ExtentTest test;
+	private static String saveDirectory = "C:\\Users\\Admin\\Desktop\\AutomatedTestingJava\\Shopping\\TestReports\\";
+	private String itemName;
+	private Boolean check;
+	
+	@BeforeClass
+	public static void initialise()
+	{
+		report = new ExtentReports(saveDirectory+"ShoppingTestReport.html", true);
+	}
 	
 	@Before
-	public void initialise()
+	public void setup()
 	{
 		System.setProperty(driverKey, path);
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		action = new Actions(driver);
 	}
+	
 	@Test
-	public void searchTest1()
+	public void searchTestFail()
 	{
-		String itemName = "dress";
+		test = report.startTest("Find Specific clothing name on page FAIL");
+		itemName = "Printed Summer Dres44s";
 		//================
 		driver.get(ShoppingHomePage.url);
+		test.log(LogStatus.INFO, "Shopping Home Page loaded");
 		ShoppingHomePage shoppingHomePage = PageFactory.initElements(driver, ShoppingHomePage.class);
 		shoppingHomePage.search(itemName, driver, action);
-		driver.get("http://automationpractice.com/index.php?controller=search&orderby=position&orderway=desc&search_query="+itemName+"&submit_search=");
-		assertTrue(driver.findElement(By.xpath("//*[@id=\"center_column\"]/ul/li[1]/div/div[1]/div/a[1]/img")).isDisplayed());
-		//assertTrue("Product Found",demoSearchPage.foundResults());
+		test.log(LogStatus.INFO, "Shopping Search Page loaded");
+		test.log(LogStatus.INFO, "Searching...");
+		DemoSearchPage demoSearchPage = PageFactory.initElements(driver, DemoSearchPage.class);
+		check = demoSearchPage.foundResults(itemName,test);
+		//========== reporting =========
+		reporting();
+		
 	}
 	@Test
-	public void searchTest2()
+	public void searchTestPass()
 	{
-		String itemName = "Printed Summer Dress";
+		test = report.startTest("Find Specific clothing name on page PASS");
+		itemName = "Printed Summer Dress";
 		//================
 		driver.get(ShoppingHomePage.url);
+		test.log(LogStatus.INFO, "Shopping Home Page loaded");
 		ShoppingHomePage shoppingHomePage = PageFactory.initElements(driver, ShoppingHomePage.class);
 		shoppingHomePage.search(itemName, driver, action);
+		test.log(LogStatus.INFO, "Shopping Search Page loaded");
+		test.log(LogStatus.INFO, "Searching...");
 		DemoSearchPage demoSearchPage = PageFactory.initElements(driver, DemoSearchPage.class);
-		assertTrue("Product Not Found",demoSearchPage.foundResults(itemName));
+		check = demoSearchPage.foundResults(itemName,test);
+		//========== reporting =========
+		reporting();
+		
+	}
+	
+	public void reporting()
+	{
+		if(check)
+		{
+			test.log(LogStatus.PASS, "Found Item: "+ itemName);
+			
+		}
+		else
+		{
+			test.log(LogStatus.FAIL, "Could Not Find Item: " +itemName);
+		}
+		assertTrue("Product Not Found",check);
+		HelperMethods.screenshot(driver,saveDirectory);
 	}
 	@After
-	public void tearDown() throws InterruptedException
+	public void tearDown()
 	{
-		driver.quit();
+		report.endTest(test);;
+		driver.close();
+	}
+	@AfterClass
+	public static void finish()
+	{
+		report.flush();
 	}
 	
 

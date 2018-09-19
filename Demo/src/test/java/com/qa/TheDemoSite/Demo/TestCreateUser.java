@@ -2,44 +2,76 @@ package com.qa.TheDemoSite.Demo;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Set;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.*;
+import org.junit.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
-public class TestCreateUser 
+import com.relevantcodes.extentreports.*;
+
+import net.bytebuddy.description.modifier.SynchronizationState;
+
+public class TestCreateUser extends DemoTestManager
 {
-	private String path = "C:/chromedriver_win32/chromedriver.exe";
-	private String driverKey = "webdriver.chrome.driver";
-	private ChromeDriver driver;
-	String name;
-	String pass;
-	String success;
-	
+	@BeforeClass
+	public static void initialise()
+	{
+		report = new ExtentReports(saveDirectory+"DemoCreateUserTestReport.html", true);
+	}
 	@Before
-	public void initialise()
+	public void setup()
 	{
 		System.setProperty(driverKey, path);
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
-		name = "Anilde";
-		pass = "lolol";
+//		name = "Anilde";
+//		pass = "lolol";
+		
 	}
 	@Test
-	public void createUser()
+	public void createUser() throws InterruptedException
 	{
+		getDataFromFile("DemoData.xlsx");
+		Set<String> userNames = users.keySet();
+		for (String names : userNames) 
+		{
+			System.out.println(names);
+			name = names;
+			pass = users.get(names);
+			testing1();
+			Thread.sleep(1000);
+		}
+	}
+	
+	public void testing1()
+	{
+		test =  report.startTest("Create user");
 		driver.get(DemoHomePage.url);
 		//=========================== Create Account ==============
+		test.log(LogStatus.INFO, "Home Page Loaded");
 		DemoHomePage demoHomePage = PageFactory.initElements(driver, DemoHomePage.class);
 		demoHomePage.getAddButton().click();
+		test.log(LogStatus.INFO, "Add User Page Loaded");
 		DemoAddUserPage demoAddUserPage = PageFactory.initElements(driver, DemoAddUserPage.class);
 		demoAddUserPage.registerUser(name, pass);
-		assertEquals("", demoAddUserPage.getUserName().getAttribute("value"));
+		test.log(LogStatus.INFO, "User Details entered");
+		test.log(LogStatus.INFO, "Creating User...");
+		check = demoAddUserPage.getUserName().getAttribute("value").equals("");
+		reporting("User created Successfully", "Unable to create User");
+		
 	}
+	
 	@After
 	public void tearDown()
 	{
-		driver.quit();
+		report.endTest(test);
+		driver.close();
 	}
 }

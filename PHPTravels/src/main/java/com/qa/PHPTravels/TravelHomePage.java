@@ -5,7 +5,7 @@ import org.openqa.selenium.support.*;
 
 public class TravelHomePage 
 {
-	@FindBy(xpath = "//*[@id=\"s2id_autogen8\"]/a")
+	@FindBy(xpath = "//*[@id=\"select2-drop\"]/div/input")
 	private WebElement locationBox;
 	
 	@FindBy(xpath = "//*[@id=\"dpd1\"]/div/input")
@@ -17,18 +17,25 @@ public class TravelHomePage
 	@FindBy(xpath = "//*[@id=\"travellersInput\"]")
 	private WebElement peopleBox;
 	
-	@FindBy(xpath = "//*[@id=\"body-section\"]/div[2]/div/form/div[5]/button")
+	@FindBy(xpath = "//*[@id=\"HOTELS\"]/form/div[5]/button")
 	private WebElement searchButton;
 	
-	public static String url = "https://www.phptravels.net/hotels";
+	public static String url = "https://www.phptravels.net/";
 	
 	public void inputSearch(String location, String start, String end, String people)
 	{
-		//locationBox.sendKeys(location);
+		locationBox.sendKeys(location);
+		locationBox.sendKeys(Keys.ENTER);
+		
 		startDateBox.sendKeys(start);
+		startDateBox.sendKeys(Keys.ENTER);
+
 		endDateBox.sendKeys(end);
+		endDateBox.sendKeys(Keys.ENTER);
+		
 		peopleBox.sendKeys(people);
-		searchButton.submit();
+		peopleBox.sendKeys(Keys.ENTER);
+		searchButton.click();
 	}
 	
 }
