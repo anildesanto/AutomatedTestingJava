@@ -29,11 +29,11 @@ public class TestBooking
 	}
 	
 	@Test
-	public void test() 
+	public void test() throws InterruptedException 
 	{
 		driver.get(TravelHomePage.url);
 		TravelHomePage travelHomePage = PageFactory.initElements(driver, TravelHomePage.class);
-		travelHomePage.inputSearch("London, United Kingdom", "27/09/2018", "29/09/2018", "2 Adult 1 Child");
+		travelHomePage.inputSearch(driver, action,"London", "27/09/2018", "29/09/2018", "2 Adult 1 Child");
 	}
 	
 	@After
