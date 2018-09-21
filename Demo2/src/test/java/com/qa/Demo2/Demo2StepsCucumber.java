@@ -25,6 +25,7 @@ public class Demo2StepsCucumber
 	public ExtentTest test;
 	public Boolean check = false;
 	public ExtentReports report;
+	public String testTitle;
 	@Before
 	public void setup()
 	{
@@ -71,11 +72,11 @@ public class Demo2StepsCucumber
 	
 	protected void reporting(String passMessage, String failMessage)
 	{
-		for (int i = 1; i < ExcelUtils.getExcelWSheet().getPhysicalNumberOfRows(); i++) 
-		{
-				ExcelUtils.setCellData("Fail", i, 2);
-			
-		}
+		ExcelUtils.setCellData(testTitle+ " "+Constants.count, Constants.count, 0);
+		if(check)
+			ExcelUtils.setCellData("Test Passed", Constants.count++, 1);
+		else
+			ExcelUtils.setCellData("Test Failed", Constants.count++, 1);
 		
 		assertTrue(failMessage,check);
 		//screenshot
@@ -84,7 +85,8 @@ public class Demo2StepsCucumber
 	
 	public void testingCreateUser(String name, String pass)
 	{
-		test =  report.startTest("Create user");
+		testTitle  = "Create user";
+		test =  report.startTest(testTitle);
 		driver.get(DemoHomePage.url);
 		//=========================== Create Account ==============
 		test.log(LogStatus.INFO, "Home Page Loaded");
@@ -101,7 +103,8 @@ public class Demo2StepsCucumber
 	}
 	public void testingUserLogIn(String name, String pass)
 	{
-		test =  report.startTest("Log In user");
+		testTitle  = "Log In user";
+		test =  report.startTest(testTitle);
 		//============== Log In ==========
 		driver.get(DemoLogInPage.url);
 		test.log(LogStatus.INFO, "Log In Page Loaded");

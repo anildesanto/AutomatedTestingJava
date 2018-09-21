@@ -14,4 +14,5 @@ public class Constants
 	public static final String driverKey = "webdriver.chrome.driver";
 	public static  ChromeDriver driver = new ChromeDriver();
 	public static final String fileTestData = "DemoWriteTestPass.xlsx";
+	public static int count = 0;
 }
