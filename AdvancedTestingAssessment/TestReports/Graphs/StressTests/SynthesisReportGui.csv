@@ -1,0 +1,4 @@
+Label,# Samples,Average,Min,Max,90% Line,Std. Dev.,Error %,Throughput,Received KB/sec,Avg. Bytes
+GetAll Owners Request,16659,29,2,949,56,63.34,1.97%,417.2,1315.26,3228.0
+GetAll Pets Request,16543,18,1,697,30,43.00,1.98%,414.4,1411.74,3488.7
+TOTAL,33202,23,1,949,41,54.43,1.98%,831.5,2726.71,3357.9

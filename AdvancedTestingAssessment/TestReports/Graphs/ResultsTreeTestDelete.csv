@@ -1,0 +1,2 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1538059473246,13,Delete Owner,404,,TestUpdateDelete 1-1,,false,,73,228,1,1,http://10.0.10.10:9966/petclinic/api/owners/31,13,0,0

@@ -165,11 +165,15 @@ public class Testing
 		JSONObject obj2 = new JSONObject();
 		obj2.put("name", "Okay");
 		obj2.put("description", "loool");
-		obj2.put("city", lotsArray);
+		obj2.put("city", "ooooh");
 		obj2.put("rating", "0");
+		lotsArray.put(obj2);
 		//lotsArray.put(obj1.toString());
 		//======================
 		//jObj.put("idk", lotsArray);
+		
+		JSONObject finalObj = new JSONObject();
+		finalObj.put("content", lotsArray);
 		
 		System.out.println(request.body(obj2.toString()));
 		

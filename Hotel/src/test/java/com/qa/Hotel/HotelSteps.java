@@ -29,7 +29,6 @@ public class HotelSteps
 	{
 		RestAssured.baseURI = Constants.baseUri;
 		request = given();
-
 		request.header(Constants.contentType, Constants.contentJasonType);
 		
 	}
