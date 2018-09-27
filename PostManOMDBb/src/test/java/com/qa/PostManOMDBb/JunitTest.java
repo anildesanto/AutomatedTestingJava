@@ -1,6 +1,7 @@
 package com.qa.PostManOMDBb;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
@@ -19,39 +20,62 @@ import io.restassured.specification.*;
 public class JunitTest   
 {
 	private Response response;
-	private ValidatableResponse json;
-	private JSONArray lol;
 	private RequestSpecification request;
+	
 	@Test
-	public void test() 
+	public void authorize() 
 	{
-		 //String title = pm.response.json().Search[0].Title;
-		 
-//	    given()
-//        	.contentType(ContentType.JSON)
-//        		.when()
-//        			.get(Constants.url+"&s=movie")
-//        				.then().statusCode(200);
+	    given()
+        	.contentType(ContentType.JSON)
+        		.when()
+        			.get(Constants.url+"&s=movie")
+        				.then().statusCode(200);
 
-//		  request = given().contentType(ContentType.JSON);
-//		  response = request.when().get(Constants.url+"&t=IT");
-//		  System.out.println("response: " + response.prettyPrint());
-//		  
-//		  response.then().body("Year", equalTo("2017"));
-		  
+	}
+	@Test
+	public void jason() 
+	{
+		  request = given().contentType(ContentType.JSON);
+		  response = request.when().get(Constants.url+"&t=IT");
+		  System.out.println("response: " + response.prettyPrint());	  
+		  response.then().body("Year", equalTo("2017"));
+	}
+	@Test
+	public void listOfJasons() 
+	{  
 		  request = given().contentType(ContentType.JSON);
 		  response =  request.when().get(Constants.url+"&s=movie");
-		  ArrayList<String> list = new ArrayList<String>();
+		  
 		  JSONObject obj = new JSONObject (response.body().asString());
 		  //System.out.println(obj.get("Search"));
+		  System.out.println("response: " + response.prettyPrint());	  
+		  Boolean found= false;
+		  String title ="";
 		  JSONArray jArray = obj.getJSONArray("Search");
-		  for (Object object : jArray) 
-		  {
-			  JSONObject o = (JSONObject) object;
-			  System.out.println(o.getString("Title"));
-				
-		  }
-		 
 		  
+		  for (int i = 0; i < jArray.length(); i++) 
+		  {
+			  title  = jArray.getJSONObject(i).getString("Title");
+			  if(title.equals("Scary Movie"))
+			  {
+				  found = true;
+				  //break;
+			  }
+			  System.out.println(title); 
+		  }
+		  
+//		  for (Object object : jArray) 
+//		  {
+//			  JSONObject o = (JSONObject) object;
+//			  title  = o.getString("Title");
+//			  if(title.equals("Scary Movie"))
+//			  {
+//				  found = true;
+//				  break;
+//			  }
+//			  System.out.println(title);
+//		  }
+		 
+		 assertTrue(found);
 	}
 }
